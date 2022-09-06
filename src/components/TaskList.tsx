@@ -14,15 +14,19 @@ export function TaskList() {
   const [newTaskTitle, setNewTaskTitle] = useState("");
 
   function handleCreateNewTask(event: FormEvent) {
+    if (!newTaskTitle) {
+      return;
+    }
     event.preventDefault();
-    setTasks((tasks) => [
-      ...tasks,
-      {
-        id: Math.random(),
-        title: newTaskTitle,
-        isComplete: false,
-      },
-    ]);
+
+    const tasks = {
+      id: Math.random(),
+      title: newTaskTitle,
+      isComplete: false,
+    };
+
+    setTasks((newTasks) => [...newTasks, tasks]);
+    setNewTaskTitle("");
   }
 
   function handleToggleTaskCompletion(id: number) {
@@ -30,7 +34,7 @@ export function TaskList() {
       if (task.id === id) {
         return {
           ...task,
-          isComplete: true,
+          isComplete: !task.isComplete,
         };
       }
       return task;
